@@ -2,6 +2,10 @@
 //const assert = require('assert');
 import * as assert from "assert";
 import { mimeOrDefault, asset } from "../src/github";
+import 'node-fetch';
+
+// node-fetch gives an error with import syntax if not mocked
+jest.mock('node-fetch', () => jest.fn());
 
 describe("github", () => {
   describe("mimeOrDefault", () => {

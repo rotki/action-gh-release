@@ -8,7 +8,6 @@ import {
 import { release, upload, GitHubReleaser } from "./github";
 import { getOctokit } from "@actions/github";
 import { setFailed, setOutput } from "@actions/core";
-import { GitHub, getOctokitOptions } from "@actions/github/lib/utils";
 
 import { env } from "process";
 
@@ -32,13 +31,7 @@ async function run() {
       }
     }
 
-    // const oktokit = GitHub.plugin(
-    //   require("@octokit/plugin-throttling"),
-    //   require("@octokit/plugin-retry")
-    // );
-
     const gh = getOctokit(config.github_token, {
-      //new oktokit(
       throttle: {
         onRateLimit: (retryAfter, options) => {
           console.warn(
@@ -87,7 +80,7 @@ async function run() {
     setOutput("url", rel.html_url);
     setOutput("id", rel.id.toString());
     setOutput("upload_url", rel.upload_url);
-  } catch (error) {
+  } catch (error: any) {
     setFailed(error.message);
   }
 }

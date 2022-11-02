@@ -159,7 +159,7 @@ export const upload = async (
   console.log(`⬆️ Uploading ${name}...`);
   const endpoint = new URL(url);
   endpoint.searchParams.append("name", name);
-  const resp = await fetch(endpoint, {
+  const resp = await fetch(endpoint.toString(), {
     headers: {
       "content-length": `${size}`,
       "content-type": mime,
@@ -168,7 +168,7 @@ export const upload = async (
     method: "POST",
     body
   });
-  const json = await resp.json();
+  const json = await resp.json() as any;
   if (resp.status !== 201) {
     throw new Error(
       `Failed to upload release asset ${name}. received status code ${
@@ -199,7 +199,7 @@ export const release = async (
   const discussion_category_name = config.input_discussion_category_name;
   const generate_release_notes = config.input_generate_release_notes;
   try {
-    // you can't get a an existing draft by tag
+    // you can't get an existing draft by tag
     // so we must find one in the list of all releases
     if (config.input_draft) {
       for await (const response of releaser.allReleases({
@@ -270,7 +270,7 @@ export const release = async (
       generate_release_notes
     });
     return release.data;
-  } catch (error) {
+  } catch (error: any) {
     if (error.status === 404) {
       const tag_name = tag;
       const name = config.input_name || tag;
@@ -299,7 +299,7 @@ export const release = async (
           generate_release_notes
         });
         return release.data;
-      } catch (error) {
+      } catch (error: any) {
         // presume a race with competing metrix runs
         console.log(
           `⚠️ GitHub release failed with status: ${

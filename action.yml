@@ -46,8 +46,6 @@ inputs:
   append_body:
     description: "Append existed body instead of overrites. Default is false."
     required: false
-env:
-  "GITHUB_TOKEN": "As provided by Github Actions"
 outputs:
   url:
     description: "URL to the Release HTML Page"
@@ -58,7 +56,7 @@ outputs:
   assets:
     description: "JSON array containing information about each uploaded asset, in the format given [here](https://docs.github.com/en/rest/reference/repos#upload-a-release-asset--code-samples) (minus the `uploader` field)"
 runs:
-  using: "node12"
+  using: "node16"
   main: "dist/index.js"
 branding:
   color: "green"
